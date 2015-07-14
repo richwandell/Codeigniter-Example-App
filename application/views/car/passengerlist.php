@@ -34,16 +34,20 @@
 <div class="panel panel-default" id="new_passenger">
   <form class="form-horizontal" action="/passenger/addPassenger" method="POST">
     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-    <div class="form-group">
+    <div class="form-group <?php echo $passenger_first_name_error; ?>">
       <label for="passenger_first_name" class="col-sm-2 control-label">First Name</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="passenger_first_name" placeholder="First Name" name="passenger_first_name">
+        <input type="text" class="form-control" id="passenger_first_name"
+               placeholder="First Name" name="passenger_first_name"
+               value="<?php echo $passenger_first_name; ?>">
       </div>
     </div>
-    <div class="form-group">
-      <label for="passenger_last_name" class="col-sm-2 control-label">First Name</label>
+    <div class="form-group <?php echo $passenger_last_name_error; ?>">
+      <label for="passenger_last_name" class="col-sm-2 control-label">Last Name</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="passenger_last_name" placeholder="Last Name" name="passenger_last_name">
+        <input type="text" class="form-control" id="passenger_last_name"
+               placeholder="Last Name" name="passenger_last_name"
+               value="<?php echo $passenger_last_name; ?>">
       </div>
     </div>
     <input type="hidden" name="passenger_car" value="<?php echo $car->getId(); ?>"/>

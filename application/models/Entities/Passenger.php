@@ -35,7 +35,7 @@ class Passenger
   /**
    * @var string
    *
-   * @ORM\Column(name="bio", type="text")
+   * @ORM\Column(name="bio", type="text", nullable=true)
    *
    */
   private $bio;

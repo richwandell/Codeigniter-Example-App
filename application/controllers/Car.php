@@ -31,6 +31,24 @@ class Car extends CI_Controller {
     }
   }
 
+  public function deleteCar()
+  {
+    if($this->input->post('car_id')){
+      $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
+      $car = $cars_repo->find($this->input->post('car_id'));
+      if($car) {
+        $this->doctrine->em->remove($car);
+        $this->doctrine->em->flush();
+        $this->session->set_flashdata("message", "Success! Removed a car");
+      }else{
+        $this->session->set_flashdata("message", "Could not find car");
+      }
+      $this->load->library('user_agent');
+      $this->load->helper('url');
+      redirect($this->agent->referrer());
+    }
+  }
+
   public function passengerList($car_id)
   {
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
@@ -40,6 +58,10 @@ class Car extends CI_Controller {
       "car" => $car,
       "message" => $this->session->flashdata('message'),
       "error" => $this->session->flashdata('error'),
+      "passenger_first_name_error" => $this->session->flashdata('passenger_first_name_error'),
+      "passenger_last_name_error" => $this->session->flashdata('passenger_last_name_error'),
+      "passenger_first_name" => $this->session->flashdata('passenger_first_name'),
+      "passenger_last_name" => $this->session->flashdata('passenger_last_name')
     ));
   }
 }
