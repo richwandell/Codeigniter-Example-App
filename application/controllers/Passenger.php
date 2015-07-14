@@ -57,8 +57,7 @@ class Passenger extends CI_Controller {
     $this->load->view('passenger/passengerlist', array(
       "passengers" => $passengers,
       "message" => $this->session->flashdata('message'),
-      "error" => $this->session->flashdata('error'),
-      "car_name_error" => $this->session->flashdata('car_name_error')
+      "error" => $this->session->flashdata('error')
     ));
   }
 }

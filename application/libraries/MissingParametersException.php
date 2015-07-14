@@ -1,6 +1,9 @@
 <?php
 
-
+/**
+ * A custom exception used for the form validation logic
+ * Class MissingParametersException
+ */
 class MissingParametersException extends Exception{
 
   private $missing = array();
