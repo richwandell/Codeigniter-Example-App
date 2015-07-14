@@ -10,7 +10,7 @@ This project is just an example of using Codeigniter.
     * Delete function for deleting a Car
     * Passenger List function for showin the Passengers in the car
     
-## Doctrine Entities
+## Doctrine Entities in application/models/Entities
 * Car
     * Cars have a ID , Make, Model, Year, Passengers, and Parts
 * Passenger
