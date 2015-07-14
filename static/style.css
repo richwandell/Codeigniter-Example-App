@@ -1,0 +1,13 @@
+body{
+    margin: 0 auto;
+    width: 1100px;
+}
+#passenger_list{
+    margin-top: 50px;
+}
+#new_passenger{
+    padding: 50px;
+}
+#part_list_total{
+    float: right;
+}
