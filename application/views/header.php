@@ -2,6 +2,8 @@
 <head>
   <link rel="stylesheet" href="/static/bootstrap.min.css" />
   <link rel="stylesheet" href="/static/style.css" />
+  <script src="/static/jquery.js"></script>
+  <script src="/static/all.js"></script>
 </head>
 <div class="page-header">
   <h1>Codeigniter Example App <small>by Rich Wandell</small></h1>

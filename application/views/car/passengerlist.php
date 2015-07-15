@@ -14,8 +14,8 @@
   <table class="table table-striped table-hover">
     <caption>
       Passenger List <br>
-      <?php echo $message; ?>
-      <?php echo $error; ?>
+      <div id="flash_message"><?php echo $message; ?></div>
+      <div id="flash_error"><?php echo $error; ?></div>
     </caption>
     <thead>
     <tr>

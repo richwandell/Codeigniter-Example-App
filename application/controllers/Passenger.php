@@ -6,6 +6,9 @@ class Passenger extends CI_Controller {
   public function addPassenger()
   {
     try {
+      $this->load->library('user_agent');
+      $this->load->library('CacheInvalidator');
+      CacheInvalidator::delete_cache($this->agent->referrer());
       $missing = array();
       if (!$this->input->post('passenger_first_name') or trim($this->input->post('passenger_first_name')) === "") {
         $missing["passenger_first_name"] = "First Name Required";
@@ -31,7 +34,6 @@ class Passenger extends CI_Controller {
       $this->doctrine->em->persist($p);
       $this->doctrine->em->flush();
       $this->load->helper('url');
-      $this->load->library('user_agent');
       $this->session->set_flashdata("message", "Success! Added a new passenger to this car");
       $this->session->set_flashdata("passenger_last_name", "");
       $this->session->set_flashdata("passenger_first_name", "");
@@ -60,4 +62,5 @@ class Passenger extends CI_Controller {
       "error" => $this->session->flashdata('error')
     ));
   }
+
 }

@@ -86,6 +86,11 @@ class Part
         return $this->price;
     }
 
+    public function formattedPrice()
+    {
+      return $this->getPrice();
+    }
+
     /**
      * Set car
      *

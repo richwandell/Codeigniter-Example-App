@@ -9,6 +9,7 @@ class Car extends CI_Controller {
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
     $cars = $cars_repo->findAll();
 
+
     $this->load->view('car/list', array(
       "cars" => $cars,
       "message" => $this->session->flashdata('message'),
@@ -27,6 +28,8 @@ class Car extends CI_Controller {
       $this->load->helper('url');
       $this->load->library('user_agent');
       $this->session->set_flashdata("message", "Success! Added a new car");
+      $this->load->library('CacheInvalidator');
+      CacheInvalidator::delete_cache("car/carlist");
       redirect($this->agent->referrer());
     }
   }
@@ -45,12 +48,15 @@ class Car extends CI_Controller {
       }
       $this->load->library('user_agent');
       $this->load->helper('url');
+      $this->load->library('CacheInvalidator');
+      CacheInvalidator::delete_cache("car/carlist");
       redirect($this->agent->referrer());
     }
   }
 
   public function passengerList($car_id)
   {
+//    $this->output->cache(1440);
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
     $car = $cars_repo->find($car_id);
     $this->load->view("car/passengerlist", array(
@@ -62,6 +68,31 @@ class Car extends CI_Controller {
       "passenger_last_name_error" => $this->session->flashdata('passenger_last_name_error'),
       "passenger_first_name" => $this->session->flashdata('passenger_first_name'),
       "passenger_last_name" => $this->session->flashdata('passenger_last_name')
+    ));
+  }
+
+  public function partList($car_id)
+  {
+    $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
+    $car = $cars_repo->find($car_id);
+    $this->load->view("car/partlist", array(
+      "parts" => $car->getParts(),
+      "car" => $car,
+      "message" => $this->session->flashdata("message"),
+      "error" => $this->session->flashdata("error"),
+      "part_name_error" => $this->session->flashdata("part_name_error"),
+      "part_price_error" => $this->session->flashdata("part_price_error"),
+      "part_name" => $this->session->flashdata("part_name"),
+      "part_price" => $this->session->flashdata("part_price")
+    ));
+  }
+
+  public function getCsrfToken()
+  {
+    header('Content-Type: application/json');
+    $this->load->view("csrf", array(
+      "message" => $this->session->flashdata("message"),
+      "error" => $this->session->flashdata("error")
     ));
   }
 }
