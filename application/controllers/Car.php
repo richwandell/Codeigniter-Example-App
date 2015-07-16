@@ -69,6 +69,8 @@ class Car extends CI_Controller {
    */
   public function addCar()
   {
+    $this->load->helper('url');
+    $this->load->library('user_agent');
     try {
       //Check if we have the car_name variable. If not we add a missing variable
       //to the $missing array.
@@ -96,8 +98,6 @@ class Car extends CI_Controller {
       $this->doctrine->em->flush();
 
       //Set our success message
-      $this->load->helper('url');
-      $this->load->library('user_agent');
       $this->session->set_userdata("flash_message", "Success! Added a new car");
       $this->session->unset_userdata("car_name_value");
 
@@ -141,6 +141,7 @@ class Car extends CI_Controller {
         $this->load->library('CacheInvalidator');
         CacheInvalidator::delete_cache("car/carlist");
         CacheInvalidator::delete_cache("car/passengerList/$car_id");
+        CacheInvalidator::delete_cache("passenger/passengerlist");
         CacheInvalidator::delete_cache($this->agent->referrer());
       }else{
         $this->session->set_userdata("flash_message", "Could not find car");

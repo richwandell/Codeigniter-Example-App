@@ -1,9 +1,22 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-
+/**
+ * Class Part
+ *
+ * The Part controller Handles everything related to the Part page.
+ */
 class Part extends CI_Controller {
-
+  /**
+   * Display the part list
+   * This page should be cached for up to 1 day. Browser cache headers will be
+   * set so that it will re validate. Server will send back a 304 not modified
+   * header.
+   *
+   * If a car is deleted or a new part is added or deleted this page cache will
+   * be invalidated.
+   *
+   */
   public function partList()
   {
     $this->output->cache(1440);
@@ -17,6 +30,8 @@ class Part extends CI_Controller {
 
   public function addPart()
   {
+    $this->load->helper('url');
+    $this->load->library('user_agent');
     try {
       $missing = array();
       if (!$this->input->post('part_name') or trim($this->input->post('part_name')) === "") {
@@ -43,8 +58,6 @@ class Part extends CI_Controller {
       $p->setCar($car);
       $this->doctrine->em->persist($p);
       $this->doctrine->em->flush();
-      $this->load->helper('url');
-      $this->load->library('user_agent');
       $this->session->set_userdata("flash_message", "Success! Added a new part to this car");
       $this->session->unset_userdata("part_name_name");
       $this->session->unset_userdata("part_price_value");
@@ -59,10 +72,13 @@ class Part extends CI_Controller {
         $this->session->set_userdata($key."_error", 'has-error');
         $this->session->set_userdata("flash_message", $val);
       }
-      $this->load->helper('url');
-      $this->load->library('user_agent');
       redirect($this->agent->referrer());
     }
+  }
+
+  public function deletePart()
+  {
+
   }
 
   /**

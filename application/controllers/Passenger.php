@@ -7,6 +7,7 @@ class Passenger extends CI_Controller {
   public function passengerList()
   {
     $this->output->cache(1440);
+    $this->setNoCache();
     $p_repo = $this->doctrine->em->getRepository('Entities\Passenger');
     $passengers = $p_repo->findAll();
 
@@ -65,5 +66,17 @@ class Passenger extends CI_Controller {
       $this->load->library('user_agent');
       redirect($this->agent->referrer());
     }
+  }
+
+  /**
+   * Sets the browser no cache header so that we don't get browser cached pages
+   * We don't want that for this type of form.
+   */
+  private function setNoCache()
+  {
+    $this->output->set_header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
+    $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
+    $this->output->set_header('Cache-Control: post-check=0, pre-check=0');
+    $this->output->set_header('Pragma: no-cache');
   }
 }

@@ -13,29 +13,29 @@
     </tr>
     </thead>
     <tbody>
-    <% parts.forEach(function(part){ %>
+    <?php foreach($parts as $part): ?>
     <tr>
       <td>
-        <a href="/part/detail/<%- part.id %>">
-          <%- part.name %>
+        <a href="/part/detail/<?php echo $part->getId(); ?>">
+          <?php echo $part->getName(); ?>
         </a>
       </td>
       <td>
-        <% if(part.car){ %>
-        <a href="/car/detail/<%- part.car.id %>">
-          <%- part.car.name %>
+        <?php if($part->getCar()): ?>
+        <a href="/car/detail/<?php echo $part->getCar()->getId(); ?>">
+          <?php echo $part->getCar()->getName(); ?>
         </a>
-        <% } %>
+        <?php endif; ?>
       </td>
       <td>
         <form action="/part/deletePart" method="POST">
-          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-          <input type="hidden" name="part_id" value="<%- part.id %>"/>
+          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+          <input type="hidden" name="part_id" value="<?php echo $part->getId(); ?>"/>
           <input class="btn btn-danger" type="submit" value="Delete" />
         </form>
       </td>
     </tr>
-    <% }); %>
+    <?php endforeach; ?>
     </tbody>
   </table>
 </div>

@@ -29,8 +29,8 @@
       </td>
       <td>
         <form action="/passenger/deletePassenger" method="POST">
-          <input type="hidden" name="_csrf" value="<%= _csrf %>" />
-          <input type="hidden" name="passenger_id" value="<%- passenger.id %>"/>
+          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+          <input type="hidden" name="passenger_id" value="<?php echo $passenger->getId(); ?>"/>
           <input class="btn btn-danger" type="submit" value="Delete" />
         </form>
       </td>
