@@ -1,7 +1,7 @@
 <?php $this->load->view('header', array("page" => "/car/carlist")); ?>
 <ol class="breadcrumb">
   <li>
-    <a href="/car/carlist/">Cars</a>
+    <a href="/car/carlist">Cars</a>
   </li>
   <li>
     <a href="/car/detail/<?php echo $car->getId(); ?>">

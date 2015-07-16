@@ -3,8 +3,8 @@
   <table class="table table-striped table-hover">
     <caption>
       All Passengers in All Cars <br>
-      <?php echo $message; ?>
-      <?php echo $error; ?>
+      <div id="flash_message"></div>
+      <div id="flash_error"></div>
     </caption>
     <thead>
     <tr>

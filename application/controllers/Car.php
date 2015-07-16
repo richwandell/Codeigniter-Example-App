@@ -15,7 +15,11 @@ class Car extends CI_Controller {
    */
   public function carlist()
   {
+    //Sets this thing to cahce for a day
     $this->output->cache(1440);
+    //Sets the browser cache header to no cache (we will still send back a 304)
+    //So it will still work.
+    $this->setNoCache();
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
     $cars = $cars_repo->findAll();
     $this->load->view('car/list', array(
@@ -33,6 +37,7 @@ class Car extends CI_Controller {
   public function passengerList($car_id)
   {
     $this->output->cache(1440);
+    $this->setNoCache();
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
     $car = $cars_repo->find($car_id);
     $this->load->view("car/passengerlist", array(
@@ -49,6 +54,7 @@ class Car extends CI_Controller {
   public function partList($car_id)
   {
     $this->output->cache(1440);
+    $this->setNoCache();
     $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
     $car = $cars_repo->find($car_id);
     $this->load->view("car/partlist", array(
@@ -150,6 +156,8 @@ class Car extends CI_Controller {
    * csrf token. This function is used to generate a new token as well as gather
    * any messages or dynamic content and send it back as a JSON array loaded
    * through AJAX.
+   *
+   * This function is a bit long but it will make sense.
    */
   public function getCsrfToken()
   {
@@ -159,7 +167,9 @@ class Car extends CI_Controller {
     $session_data = $this->session->all_userdata();
     //Filter out things that we don't want to send back
     $keys = array_filter(array_keys($session_data), function($key){
-      return substr($key, 0, 6) === "flash_" || substr($key, -6) === "_value";
+      return substr($key, 0, 6) === "flash_"
+      || substr($key, -6) === "_value"
+      || substr($key, -6) === "_error";
     });
     $json_data = array_intersect_key($session_data, array_flip($keys));
     //Unset the data that were sending back (flash messages)
@@ -169,31 +179,47 @@ class Car extends CI_Controller {
     //Set up an array to be json_encoded and returned
     $return = array("dynamic_data" => array());
     foreach($json_data as $key => $val){
-      $return["dynamic_data"][] = array(
+      $d = array(
         //The selector for jQuery
-        "selector" => "#$key",
-
-        //_value would be user entered data that should be saved
-        "data" => substr($key, -6) === "_value" ? array(
+        "selector" => "#$key"
+      );
+      //If this is a value
+      if(substr($key, -6) === "_value"){
+        $d["data"] = array(
           "attr" => "value",
           "data" => $val
-
-        //_error would be form errors
-        ) : substr($key, -6) === "_error" ? array(
+        );
+      //If this is an error
+      }elseif(substr($key, -6) === "_error"){
+        $d["data"] = array(
           "attr" => "class",
-          "has-error"
-
-        //Anything else will be inserted HTML
-        ) : array(
+          "data" => "has-error"
+        );
+      //Anything else will be inserted as html
+      }else{
+        $d["data"] = array(
           "attr" => "html",
           "data" => $val
-        )
-      );
+        );
+      }
+      $return["dynamic_data"][] = $d;
     }
     //Add that csrf token
     $return["csrf"] = [$this->security->get_csrf_token_name(), $this->security->get_csrf_hash()];
     //Send it back!
     echo json_encode($return);
     exit;
+  }
+
+  /**
+   * Sets the browser no cache header so that we don't get browser cached pages
+   * We don't want that for this type of form.
+   */
+  private function setNoCache()
+  {
+    $this->output->set_header('Last-Modified: '.gmdate('D, d M Y H:i:s', time()).' GMT');
+    $this->output->set_header('Cache-Control: no-store, no-cache, must-revalidate');
+    $this->output->set_header('Cache-Control: post-check=0, pre-check=0');
+    $this->output->set_header('Pragma: no-cache');
   }
 }
