@@ -1,7 +1,7 @@
 <?php $this->load->view('header', array("page" => "/car/carlist")); ?>
 <ol class="breadcrumb">
   <li>
-    <a href="/car/list/">Cars</a>
+    <a href="/car/carlist/">Cars</a>
   </li>
   <li>
     <a href="/car/detail/<?php echo $car->getId(); ?>">
@@ -37,21 +37,21 @@
            name="<?php echo $this->security->get_csrf_token_name(); ?>"
            value="<?php echo $this->security->get_csrf_hash(); ?>">
 
-    <div class="form-group <?php echo $part_name_error; ?>">
+    <div class="form-group" id="part_name_error">
       <label for="part_name" class="col-sm-2 control-label">Part Name</label>
 
       <div class="col-sm-10">
-        <input value="<?php echo $part_name; ?>" type="text"
-               class="form-control" id="part_name"
+        <input value="" type="text"
+               class="form-control" id="part_name_value"
                placeholder="Part Name" name="part_name">
       </div>
     </div>
-    <div class="form-group <?php echo $part_price_error; ?>">
+    <div class="form-group" id="part_price_error">
       <label for="part_price" class="col-sm-2 control-label">Price ($)</label>
 
       <div class="col-sm-10">
-        <input value="<?php echo $part_price; ?>" type="number" min="0"
-        max="9999" step="0.01" size="4" class="form-control" id="part_price"
+        <input value="" type="number" min="0"
+        max="9999" step="0.01" size="4" class="form-control" id="part_price_value"
         name="part_price">
       </div>
     </div>

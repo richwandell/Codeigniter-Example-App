@@ -41,7 +41,7 @@ class Passenger
   private $bio;
   /**
    * @ORM\ManyToOne(targetEntity="Car", inversedBy="passengers")
-   * @ORM\JoinColumn(name="car_id", referencedColumnName="id")
+   * @ORM\JoinColumn(name="car_id", referencedColumnName="id", onDelete="CASCADE")
    */
   protected $car;
 

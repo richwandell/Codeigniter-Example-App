@@ -59,10 +59,10 @@
 <div class="panel panel-default" id="new_passenger">
   <form class="form-horizontal" action="/car/addCar" method="POST">
     <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
-    <div class="form-group <?php echo $car_name_error; ?>">
+    <div class="form-group" id="car_name_error">
       <label for="car_name" class="col-sm-2 control-label">Car Name</label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" id="car_name" placeholder="Enter Car Name..." name="car_name">
+        <input type="text" class="form-control" id="car_name_value" placeholder="Enter Car Name..." name="car_name">
       </div>
     </div>
     <input type="submit" class="btn btn-default" value="Add Car"/>

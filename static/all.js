@@ -4,13 +4,16 @@
       url: "/car/getCsrfToken",
       dataType: 'json',
       success: function(res){
-        $("[name='"+res.csrf_token[0]+"']").val(res.csrf_token[1]);
-        if($.trim(res.flash.message) !== "") {
-          $("#flash_message").html(res.flash.message);
-        }
-        if($.trim(res.flash.error) !== "") {
-          $("#flash_error").html(res.flash.error);
-        }
+        $("[name='"+res.csrf[0]+"']").val(res.csrf[1]);
+        $(res.dynamic_data).each(function(i, obj){
+          if(obj.data.attr === "html") {
+            $(obj.selector).html(obj.data.data);
+          }else if (obj.data.attr === "class"){
+            $(obj.selector).addClass(obj.data.data);
+          }else{
+            $(obj.selector).val(obj.data.data);
+          }
+        });
       }
     });
   });

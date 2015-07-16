@@ -7,8 +7,6 @@ class Passenger extends CI_Controller {
   {
     try {
       $this->load->library('user_agent');
-      $this->load->library('CacheInvalidator');
-      CacheInvalidator::delete_cache($this->agent->referrer());
       $missing = array();
       if (!$this->input->post('passenger_first_name') or trim($this->input->post('passenger_first_name')) === "") {
         $missing["passenger_first_name"] = "First Name Required";
@@ -37,13 +35,15 @@ class Passenger extends CI_Controller {
       $this->session->set_flashdata("message", "Success! Added a new passenger to this car");
       $this->session->set_flashdata("passenger_last_name", "");
       $this->session->set_flashdata("passenger_first_name", "");
+      $this->load->library('CacheInvalidator');
+      CacheInvalidator::delete_cache($this->agent->referrer());
       redirect($this->agent->referrer());
 
     }catch(MissingParametersException $e){
       $missing = $e->getMissing();
       foreach($missing as $key => $val) {
         $this->session->set_flashdata($key."_error", 'has-error');
-        $this->session->set_flashdata("message", $val);
+        $this->session->set_flashdata("flash_message", $val);
       }
       $this->load->helper('url');
       $this->load->library('user_agent');

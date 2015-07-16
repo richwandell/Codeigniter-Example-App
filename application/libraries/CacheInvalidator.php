@@ -13,7 +13,9 @@ class CacheInvalidator{
       $CI->config->item('index_page').
       $uri_string;
 
-    unlink($cache_path . md5($uri));
-    unlink($cache_path . md5($uri_string));
+    if(file_exists($cache_path . md5($uri)))
+      unlink($cache_path . md5($uri));
+    if(file_exists($cache_path . md5($uri_string)))
+      unlink($cache_path . md5($uri_string));
   }
 }

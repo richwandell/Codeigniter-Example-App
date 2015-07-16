@@ -14,8 +14,8 @@
   <table class="table table-striped table-hover">
     <caption>
       Passenger List <br>
-      <div id="flash_message"><?php echo $message; ?></div>
-      <div id="flash_error"><?php echo $error; ?></div>
+      <div id="flash_message"></div>
+      <div id="flash_error"></div>
     </caption>
     <thead>
     <tr>
@@ -47,7 +47,7 @@
       <div class="col-sm-10">
         <input type="text" class="form-control" id="passenger_last_name"
                placeholder="Last Name" name="passenger_last_name"
-               value="<?php echo $passenger_last_name; ?>">
+               value="">
       </div>
     </div>
     <input type="hidden" name="passenger_car" value="<?php echo $car->getId(); ?>"/>
