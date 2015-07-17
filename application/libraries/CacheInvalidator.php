@@ -17,5 +17,6 @@ class CacheInvalidator{
       unlink($cache_path . md5($uri));
     if(file_exists($cache_path . md5($uri_string)))
       unlink($cache_path . md5($uri_string));
+
   }
 }

@@ -34,7 +34,7 @@ class Car extends CI_Controller {
    * or when a new passenger is added to this car.
    * @param $car_id
    */
-  public function passengerList($car_id)
+  public function passengerlist($car_id)
   {
     $this->output->cache(1440);
     $this->setNoCache();
@@ -51,7 +51,7 @@ class Car extends CI_Controller {
    * deleted or when a new part is added to this car.
    * @param $car_id
    */
-  public function partList($car_id)
+  public function partlist($car_id)
   {
     $this->output->cache(1440);
     $this->setNoCache();
@@ -61,6 +61,27 @@ class Car extends CI_Controller {
       "parts" => $car->getParts(),
       "car" => $car
     ));
+  }
+
+  /**
+   * Shows the car detail page with information about the car
+   * @param $car_id
+   */
+  public function detail($car_id)
+  {
+    $this->output->cache(1440);
+    $this->setNoCache();
+    $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
+    $car = $cars_repo->find($car_id);
+    if($car){
+      $this->load->view("car/detail", array(
+        "car" => $car
+      ));
+    }else{
+      $this->load->helper('url');
+      $this->load->library('user_agent');
+      redirect($this->agent->referrer());
+    }
   }
 
   /**
@@ -132,17 +153,27 @@ class Car extends CI_Controller {
       $cars_repo = $this->doctrine->em->getRepository('Entities\Car');
       $car = $cars_repo->find($car_id);
       if($car) {
+        //Invalidate cache
+        $this->load->library('CacheInvalidator');
+        $parts = $car->getParts();
+        $passengers = $car->getPassengers();
+        foreach($parts as $part){
+          CacheInvalidator::delete_cache("part/detail/".$part->getId());
+        }
+        foreach($passengers as $p){
+          CacheInvalidator::delete_cache("passenger/detail/".$p->getId());
+        }
+        CacheInvalidator::delete_cache("car/carlist");
+        CacheInvalidator::delete_cache("car/passengerlist/$car_id");
+        CacheInvalidator::delete_cache("car/partlist/$car_id");
+        CacheInvalidator::delete_cache("passenger/passengerlist");
+        CacheInvalidator::delete_cache("part/partlist");
+        CacheInvalidator::delete_cache($this->agent->referrer());
         //Remove the car
         $this->doctrine->em->remove($car);
         $this->doctrine->em->flush();
         //Set message
         $this->session->set_userdata("flash_message", "Success! Removed a car");
-        //Invalidate cache
-        $this->load->library('CacheInvalidator');
-        CacheInvalidator::delete_cache("car/carlist");
-        CacheInvalidator::delete_cache("car/passengerList/$car_id");
-        CacheInvalidator::delete_cache("passenger/passengerlist");
-        CacheInvalidator::delete_cache($this->agent->referrer());
       }else{
         $this->session->set_userdata("flash_message", "Could not find car");
       }

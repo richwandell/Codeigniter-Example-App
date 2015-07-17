@@ -4,7 +4,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Passenger extends CI_Controller {
 
-  public function passengerList()
+  public function passengerlist()
   {
     $this->output->cache(1440);
     $this->setNoCache();
@@ -14,6 +14,27 @@ class Passenger extends CI_Controller {
     $this->load->view('passenger/passengerlist', array(
       "passengers" => $passengers
     ));
+  }
+
+  /**
+   * Shows the passenger detail page with information about the car
+   * @param $car_id
+   */
+  public function detail($car_id)
+  {
+    $this->output->cache(1440);
+    $this->setNoCache();
+    $p_repo = $this->doctrine->em->getRepository('Entities\Passenger');
+    $p = $p_repo->find($car_id);
+    if($p){
+      $this->load->view("passenger/detail", array(
+        "passenger" => $p
+      ));
+    }else{
+      $this->load->helper('url');
+      $this->load->library('user_agent');
+      redirect($this->agent->referrer());
+    }
   }
 
   public function addPassenger()
@@ -51,8 +72,8 @@ class Passenger extends CI_Controller {
       $this->session->unset_userdata("passenger_first_name_value");
       $this->load->library('CacheInvalidator');
       CacheInvalidator::delete_cache($this->agent->referrer());
-      CacheInvalidator::delete_cache("car/passengerList/$car_id");
-      CacheInvalidator::delete_cache("passenger/passengerList");
+      CacheInvalidator::delete_cache("car/passengerlist/$car_id");
+      CacheInvalidator::delete_cache("passenger/passengerlist");
       CacheInvalidator::delete_cache("car/carlist");
       redirect($this->agent->referrer());
 
@@ -64,6 +85,41 @@ class Passenger extends CI_Controller {
       }
       $this->load->helper('url');
       $this->load->library('user_agent');
+      redirect($this->agent->referrer());
+    }
+  }
+
+  public function deletePassenger()
+  {
+    $this->load->library('user_agent');
+    $this->load->helper('url');
+    //Check if we have the passenger id
+    if($this->input->post('passenger_id')){
+      //Find our passenger
+      $p_id = $this->input->post('passenger_id');
+      $p_repo = $this->doctrine->em->getRepository('Entities\Passenger');
+      $p = $p_repo->find($p_id);
+      if($p) {
+        //Remove the passenger
+        $this->doctrine->em->remove($p);
+        $this->doctrine->em->flush();
+        //Set message
+        $this->session->set_userdata("flash_message", "Success! Removed a passenger");
+        //Invalidate cache
+        $this->load->library('CacheInvalidator');
+        CacheInvalidator::delete_cache("car/carlist");
+        $car = $p->getCar();
+        if($car) {
+          $car_id = $car->getId();
+          CacheInvalidator::delete_cache("car/passengerList/$car_id");
+        }
+        CacheInvalidator::delete_cache("passenger/passengerList");
+        CacheInvalidator::delete_cache($this->agent->referrer());
+      }else{
+        $this->session->set_userdata("flash_message", "Could not find passenger");
+      }
+      redirect($this->agent->referrer());
+    }else{
       redirect($this->agent->referrer());
     }
   }

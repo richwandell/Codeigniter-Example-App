@@ -27,9 +27,9 @@ class Part
    */
   private $name;
   /**
-   * @var integer
+   * @var float
    *
-   * @ORM\Column(name="price", type="integer")
+   * @ORM\Column(name="price", type="float")
    */
   private $price;
   /**
@@ -62,29 +62,7 @@ class Part
         return $this->name;
     }
 
-    /**
-     * Set price
-     *
-     * @param integer $price
-     *
-     * @return Part
-     */
-    public function setPrice($price)
-    {
-        $this->price = $price;
 
-        return $this;
-    }
-
-    /**
-     * Get price
-     *
-     * @return integer
-     */
-    public function getPrice()
-    {
-        return $this->price;
-    }
 
     public function formattedPrice()
     {
@@ -123,5 +101,29 @@ class Part
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * Set price
+     *
+     * @param float $price
+     *
+     * @return Part
+     */
+    public function setPrice($price)
+    {
+        $this->price = $price;
+
+        return $this;
+    }
+
+    /**
+     * Get price
+     *
+     * @return float
+     */
+    public function getPrice()
+    {
+        return $this->price;
     }
 }

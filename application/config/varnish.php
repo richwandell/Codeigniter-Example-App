@@ -1,0 +1,8 @@
+<?php
+
+$config["varnish"] = array(
+    VARNISH_CONFIG_HOST    => "127.0.0.1",
+    VARNISH_CONFIG_PORT    => 6082,
+    VARNISH_CONFIG_SECRET  => "6e4cc631-9043-4126-a982-827c028f1657",
+    VARNISH_CONFIG_TIMEOUT => 300,
+);

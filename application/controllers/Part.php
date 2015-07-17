@@ -17,7 +17,7 @@ class Part extends CI_Controller {
    * be invalidated.
    *
    */
-  public function partList()
+  public function partlist()
   {
     $this->output->cache(1440);
     $this->setNoCache();
@@ -26,6 +26,23 @@ class Part extends CI_Controller {
     $this->load->view('part/list', array(
       "parts" => $parts
     ));
+  }
+
+  public function detail($part_id)
+  {
+    $this->output->cache(1440);
+    $this->setNoCache();
+    $parts_repo = $this->doctrine->em->getRepository('Entities\Part');
+    $part = $parts_repo->find($part_id);
+    if($part) {
+      $this->load->view("part/detail", array(
+        "part" => $part
+      ));
+    }else{
+      $this->load->helper('url');
+      $this->load->library('user_agent');
+      redirect($this->agent->referrer());
+    }
   }
 
   public function addPart()
@@ -63,8 +80,9 @@ class Part extends CI_Controller {
       $this->session->unset_userdata("part_price_value");
       $this->load->library('CacheInvalidator');
       CacheInvalidator::delete_cache($this->agent->referrer());
-      CacheInvalidator::delete_cache("car/partList/$car_id");
+      CacheInvalidator::delete_cache("car/partlist/$car_id");
       CacheInvalidator::delete_cache("car/carlist");
+      CacheInvalidator::delete_cache("part/partlist");
       redirect($this->agent->referrer());
     }catch(MissingParametersException $e){
       $missing = $e->getMissing();
@@ -78,7 +96,34 @@ class Part extends CI_Controller {
 
   public function deletePart()
   {
-
+    $this->load->library('user_agent');
+    $this->load->helper('url');
+    //Check if we have the car id
+    if($this->input->post('part_id')){
+      //Find our part
+      $part_id = $this->input->post('part_id');
+      $parts_repo = $this->doctrine->em->getRepository('Entities\Part');
+      $part = $parts_repo->find($part_id);
+      if($part) {
+        //Remove the part
+        $this->doctrine->em->remove($part);
+        $this->doctrine->em->flush();
+        //Set message
+        $this->session->set_userdata("flash_message", "Success! Removed a part");
+        //Invalidate cache
+        $this->load->library('CacheInvalidator');
+        CacheInvalidator::delete_cache("car/carlist");
+        $car_id = $part->getCar()->getId();
+        CacheInvalidator::delete_cache("car/partlist/$car_id");
+        CacheInvalidator::delete_cache("part/partlist");
+        CacheInvalidator::delete_cache($this->agent->referrer());
+      }else{
+        $this->session->set_userdata("flash_message", "Could not find part");
+      }
+      redirect($this->agent->referrer());
+    }else{
+      redirect($this->agent->referrer());
+    }
   }
 
   /**
