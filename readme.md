@@ -31,3 +31,13 @@ in the car controller.
     
 * Part
     * Cars have parts. A part has a name and a price.
+    
+
+## Installation
+* Change the database config in config/database.php
+* Create a database with the correct name on your server
+* Run composer install
+* Update your database using doctrine command line
+```SH
+php vendor/bin/doctrine orm:schema-tool:create
+```
