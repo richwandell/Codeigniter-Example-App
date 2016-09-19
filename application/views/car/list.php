@@ -45,7 +45,7 @@
       </td>
       <td>
         <form action="/car/deleteCar" method="POST">
-          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+          <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="">
           <input type="hidden" name="car_id" value="<?php echo $car->getId(); ?>"/>
           <input class="btn btn-danger" type="submit" value="Delete" />
         </form>
@@ -58,7 +58,7 @@
 
 <div class="panel panel-default" id="new_passenger">
   <form class="form-horizontal" action="/car/addCar" method="POST">
-    <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="<?php echo $this->security->get_csrf_hash(); ?>">
+    <input type="hidden" name="<?php echo $this->security->get_csrf_token_name(); ?>" value="">
     <div class="form-group" id="car_name_error">
       <label for="car_name" class="col-sm-2 control-label">Car Name</label>
       <div class="col-sm-10">

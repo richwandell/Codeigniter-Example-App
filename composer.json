@@ -4,7 +4,8 @@
   "license": "MIT",
   "require": {
     "php": ">=5.2.4",
-    "doctrine/orm": "^2.5"
+    "doctrine/orm": "^2.5",
+    "facebook/webdriver": "^1.1"
   },
   "require-dev": {
     "mikey179/vfsStream": "1.1.*"
