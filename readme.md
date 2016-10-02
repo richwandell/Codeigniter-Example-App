@@ -2,7 +2,8 @@
 This project is an example of using Codeigniter with a full page cache and dynamic content.
  The different forms will effect the data that is displayed on other pages. This project demonstrates how 
  both browser cache and an object cache (redis) can be leveraged to speed up even the most dynamic data driven
- php applications.
+ php applications without the need for a reverse proxy cache like varnish nginx or squid which can be overkill in 
+ certain situations. 
 
 # Things to pay attention to
 This application shows how page cache can be used with dynamic content. 
