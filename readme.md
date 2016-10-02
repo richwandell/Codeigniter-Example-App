@@ -1,9 +1,12 @@
 # This project
-This project is just an example of using Codeigniter. 
+This project is an example of using Codeigniter with a full page cache and dynamic content.
+ The different forms will effect the data that is displayed on other pages. This project demonstrates how 
+ both browser cache and an object cache (redis) can be leveraged to speed up even the most dynamic data driven
+ php applications.
 
 # Things to pay attention to
 This application shows how page cache can be used with dynamic content. 
-Each Controller has pages that are cached for up to 1 day.
+Each Controller has pages that are cached for up to 4 hours.
 When forms are submitted the page is then cleared from cache along with any other pages
 that would be effected by the new data. For example... if I were to add a new part to a car
 the car list page as well as the car parts list page and the parts list pages would all be 
@@ -41,3 +44,4 @@ in the car controller.
 ```SH
 php vendor/bin/doctrine orm:schema-tool:create
 ```
+* Update the redis config in config/config.php
