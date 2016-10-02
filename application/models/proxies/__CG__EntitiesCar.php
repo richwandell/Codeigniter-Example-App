@@ -64,10 +64,10 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return array('__isInitialized__', '' . "\0" . 'Entities\\Car' . "\0" . 'id', '' . "\0" . 'Entities\\Car' . "\0" . 'name', '' . "\0" . 'Entities\\Car' . "\0" . 'make', '' . "\0" . 'Entities\\Car' . "\0" . 'model', '' . "\0" . 'Entities\\Car' . "\0" . 'year', 'passengers', 'parts');
+            return array('__isInitialized__', 'passengers', 'parts', '' . "\0" . 'Entities\\Car' . "\0" . 'id', '' . "\0" . 'Entities\\Car' . "\0" . 'name', '' . "\0" . 'Entities\\Car' . "\0" . 'make', '' . "\0" . 'Entities\\Car' . "\0" . 'model', '' . "\0" . 'Entities\\Car' . "\0" . 'year');
         }
 
-        return array('__isInitialized__', '' . "\0" . 'Entities\\Car' . "\0" . 'id', '' . "\0" . 'Entities\\Car' . "\0" . 'name', '' . "\0" . 'Entities\\Car' . "\0" . 'make', '' . "\0" . 'Entities\\Car' . "\0" . 'model', '' . "\0" . 'Entities\\Car' . "\0" . 'year', 'passengers', 'parts');
+        return array('__isInitialized__', 'passengers', 'parts', '' . "\0" . 'Entities\\Car' . "\0" . 'id', '' . "\0" . 'Entities\\Car' . "\0" . 'name', '' . "\0" . 'Entities\\Car' . "\0" . 'make', '' . "\0" . 'Entities\\Car' . "\0" . 'model', '' . "\0" . 'Entities\\Car' . "\0" . 'year');
     }
 
     /**
@@ -176,17 +176,6 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setName($name)
-    {
-
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
-
-        return parent::setName($name);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
     public function getName()
     {
 
@@ -198,12 +187,12 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setMake($make)
+    public function setName($name)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMake', array($make));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setName', array($name));
 
-        return parent::setMake($make);
+        return parent::setName($name);
     }
 
     /**
@@ -220,12 +209,12 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setModel($model)
+    public function setMake($make)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setModel', array($model));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setMake', array($make));
 
-        return parent::setModel($model);
+        return parent::setMake($make);
     }
 
     /**
@@ -242,12 +231,12 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setYear($year)
+    public function setModel($model)
     {
 
-        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setYear', array($year));
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setModel', array($model));
 
-        return parent::setYear($year);
+        return parent::setModel($model);
     }
 
     /**
@@ -259,6 +248,17 @@ class Car extends \Entities\Car implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getYear', array());
 
         return parent::getYear();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setYear($year)
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setYear', array($year));
+
+        return parent::setYear($year);
     }
 
     /**

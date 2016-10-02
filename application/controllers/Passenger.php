@@ -78,6 +78,7 @@ class Passenger extends MY_Controller
             $this->session->unset_userdata("passenger_first_name_value");
             $this->output->delete_cache($this->referrer);
             $this->output->delete_cache("car/passengerlist/$car_id");
+            $this->output->delete_cache("car/detail/$car_id");
             $this->output->delete_cache("passenger/passengerlist");
             $this->output->delete_cache("car/carlist");
             redirect($this->agent->referrer());
