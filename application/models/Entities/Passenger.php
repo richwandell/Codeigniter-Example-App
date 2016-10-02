@@ -12,38 +12,48 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Passenger
 {
-  /**
-   * @var integer
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="firstname", type="string", length=255)
-   */
-  private $first_name;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="last_name", type="string", length=255)
-   */
-  private $last_name;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="bio", type="text", nullable=true)
-   *
-   */
-  private $bio;
-  /**
-   * @ORM\ManyToOne(targetEntity="Car", inversedBy="passengers")
-   * @ORM\JoinColumn(name="car_id", referencedColumnName="id", onDelete="CASCADE")
-   */
-  protected $car;
+    /**
+     * @ORM\ManyToOne(targetEntity="Car", inversedBy="passengers")
+     * @ORM\JoinColumn(name="car_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $car;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="firstname", type="string", length=255)
+     */
+    private $first_name;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="last_name", type="string", length=255)
+     */
+    private $last_name;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="bio", type="text", nullable=true)
+     *
+     */
+    private $bio;
+
+    /**
+     * Get firstName
+     *
+     * @return string
+     */
+    public function getFirstName()
+    {
+        return $this->first_name;
+    }
 
     /**
      * Set firstName
@@ -60,13 +70,13 @@ class Passenger
     }
 
     /**
-     * Get firstName
+     * Get lastName
      *
      * @return string
      */
-    public function getFirstName()
+    public function getLastName()
     {
-        return $this->first_name;
+        return $this->last_name;
     }
 
     /**
@@ -84,13 +94,13 @@ class Passenger
     }
 
     /**
-     * Get lastName
+     * Get bio
      *
      * @return string
      */
-    public function getLastName()
+    public function getBio()
     {
-        return $this->last_name;
+        return $this->bio;
     }
 
     /**
@@ -108,13 +118,13 @@ class Passenger
     }
 
     /**
-     * Get bio
+     * Get car
      *
-     * @return string
+     * @return \Entities\Car
      */
-    public function getBio()
+    public function getCar()
     {
-        return $this->bio;
+        return $this->car;
     }
 
     /**
@@ -129,16 +139,6 @@ class Passenger
         $this->car = $car;
 
         return $this;
-    }
-
-    /**
-     * Get car
-     *
-     * @return \Entities\Car
-     */
-    public function getCar()
-    {
-        return $this->car;
     }
 
     /**

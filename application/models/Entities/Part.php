@@ -12,31 +12,41 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Part
 {
-  /**
-   * @var integer
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="name", type="string", length=255)
-   */
-  private $name;
-  /**
-   * @var float
-   *
-   * @ORM\Column(name="price", type="float")
-   */
-  private $price;
-  /**
-   * @ORM\ManyToOne(targetEntity="Car", inversedBy="passengers")
-   * @ORM\JoinColumn(name="car_id", referencedColumnName="id", onDelete="CASCADE")
-   */
-  protected $car;
+    /**
+     * @ORM\ManyToOne(targetEntity="Car", inversedBy="passengers")
+     * @ORM\JoinColumn(name="car_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    protected $car;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="price", type="float")
+     */
+    private $price;
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
     /**
      * Set name
@@ -52,55 +62,19 @@ class Part
         return $this;
     }
 
-    /**
-     * Get name
-     *
-     * @return string
-     */
-    public function getName()
-    {
-        return $this->name;
-    }
-
-
-
     public function formattedPrice()
     {
-      return $this->getPrice();
+        return $this->getPrice();
     }
 
     /**
-     * Set car
+     * Get price
      *
-     * @param \Entities\Car $car
-     *
-     * @return Part
+     * @return float
      */
-    public function setCar(\Entities\Car $car = null)
+    public function getPrice()
     {
-        $this->car = $car;
-
-        return $this;
-    }
-
-    /**
-     * Get car
-     *
-     * @return \Entities\Car
-     */
-    public function getCar()
-    {
-        return $this->car;
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
+        return $this->price;
     }
 
     /**
@@ -118,12 +92,36 @@ class Part
     }
 
     /**
-     * Get price
+     * Get car
      *
-     * @return float
+     * @return \Entities\Car
      */
-    public function getPrice()
+    public function getCar()
     {
-        return $this->price;
+        return $this->car;
+    }
+
+    /**
+     * Set car
+     *
+     * @param \Entities\Car $car
+     *
+     * @return Part
+     */
+    public function setCar(\Entities\Car $car = null)
+    {
+        $this->car = $car;
+
+        return $this;
+    }
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
     }
 }

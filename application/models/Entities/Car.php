@@ -6,59 +6,69 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
 /**
-* CronRule
-*
-* @ORM\Table()
-* @ORM\Entity
-*/
+ * CronRule
+ *
+ * @ORM\Table()
+ * @ORM\Entity
+ */
 class Car
 {
-  /**
-   * @var integer
-   *
-   * @ORM\Column(name="id", type="integer")
-   * @ORM\Id
-   * @ORM\GeneratedValue(strategy="AUTO")
-   */
-  private $id;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="name", type="string", length=255)
-   */
-  private $name;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="make", type="string", length=255, nullable=true)
-   */
-  private $make;
-  /**
-   * @var string
-   *
-   * @ORM\Column(name="model", type="string", length=255, nullable=true)
-   */
-  private $model;
-  /**
-   * @var \DateTime
-   *
-   * @ORM\Column(name="year", type="datetime", nullable=true)
-   */
-  private $year;
-  /**
-   * @ORM\OneToMany(targetEntity="Passenger", mappedBy="car")
-   */
-  protected $passengers;
-  /**
-   * @ORM\OneToMany(targetEntity="Part", mappedBy="car")
-   */
-  protected $parts;
+    /**
+     * @ORM\OneToMany(targetEntity="Passenger", mappedBy="car")
+     */
+    protected $passengers;
+    /**
+     * @ORM\OneToMany(targetEntity="Part", mappedBy="car")
+     */
+    protected $parts;
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=255)
+     */
+    private $name;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="make", type="string", length=255, nullable=true)
+     */
+    private $make;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="model", type="string", length=255, nullable=true)
+     */
+    private $model;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="year", type="datetime", nullable=true)
+     */
+    private $year;
 
-  public function __construct()
-  {
-    $this->passengers = new ArrayCollection();
-    $this->parts = new ArrayCollection();
-  }
+    public function __construct()
+    {
+        $this->passengers = new ArrayCollection();
+        $this->parts = new ArrayCollection();
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
     /**
      * Set name
@@ -75,13 +85,13 @@ class Car
     }
 
     /**
-     * Get name
+     * Get make
      *
      * @return string
      */
-    public function getName()
+    public function getMake()
     {
-        return $this->name;
+        return $this->make;
     }
 
     /**
@@ -99,13 +109,13 @@ class Car
     }
 
     /**
-     * Get make
+     * Get model
      *
      * @return string
      */
-    public function getMake()
+    public function getModel()
     {
-        return $this->make;
+        return $this->model;
     }
 
     /**
@@ -123,13 +133,13 @@ class Car
     }
 
     /**
-     * Get model
+     * Get year
      *
-     * @return string
+     * @return \DateTime
      */
-    public function getModel()
+    public function getYear()
     {
-        return $this->model;
+        return $this->year;
     }
 
     /**
@@ -144,16 +154,6 @@ class Car
         $this->year = $year;
 
         return $this;
-    }
-
-    /**
-     * Get year
-     *
-     * @return \DateTime
-     */
-    public function getYear()
-    {
-        return $this->year;
     }
 
     /**

@@ -14,54 +14,58 @@ use Doctrine\Common\Cache\ArrayCache;
 use Doctrine\DBAL\Logging\EchoSQLLogger;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 
-class Doctrine {
+class Doctrine
+{
 
-  public $em = null;
+    public $em = null;
 
-  public function __construct()
-  {
-    // load database configuration from CodeIgniter
-    require_once APPPATH.'config/database.php';
+    public function __construct()
+    {
+        // load database configuration from CodeIgniter
+        require_once APPPATH.'config/database.php';
 
-    $doctrineClassLoader = new ClassLoader('Doctrine',  APPPATH.'libraries');
-    $doctrineClassLoader->register();
-    $entitiesClassLoader = new ClassLoader('models', rtrim(APPPATH, "/" ));
-    $entitiesClassLoader->register();
-    $proxiesClassLoader = new ClassLoader('Proxies', APPPATH.'models/proxies');
-    $proxiesClassLoader->register();
+        $doctrineClassLoader = new ClassLoader('Doctrine', APPPATH.'libraries');
+        $doctrineClassLoader->register();
+        $entitiesClassLoader = new ClassLoader('models', rtrim(APPPATH, "/"));
+        $entitiesClassLoader->register();
+        $proxiesClassLoader = new ClassLoader('Proxies', APPPATH.'models/proxies');
+        $proxiesClassLoader->register();
 
-    // Set up caches
-    $config = new Configuration;
-    $cache = new ArrayCache;
-    $config->setMetadataCacheImpl($cache);
+        // Set up caches
+        $config = new Configuration();
+        $cache = new ArrayCache();
+        $config->setMetadataCacheImpl($cache);
 
-    $reader = new AnnotationReader();
-    $driverImpl = new \Doctrine\ORM\Mapping\Driver\AnnotationDriver($reader, array(APPPATH . "models/Entities"));
-    $config->setMetadataDriverImpl($driverImpl);
-    $config->setQueryCacheImpl($cache);
+        $reader = new AnnotationReader();
+        $driverImpl = new AnnotationDriver($reader, array(APPPATH."models/Entities"));
+        $config->setMetadataDriverImpl($driverImpl);
+        $config->setQueryCacheImpl($cache);
 
-    // Proxy configuration
-    $config->setProxyDir(APPPATH.'/models/proxies');
-    $config->setProxyNamespace('Proxies');
-    $config->setAutoGenerateProxyClasses( TRUE );
-    AnnotationRegistry::registerLoader('class_exists');
+        // Proxy configuration
+        $config->setProxyDir(APPPATH.'/models/proxies');
+        $config->setProxyNamespace('Proxies');
+        $config->setAutoGenerateProxyClasses(true);
+        AnnotationRegistry::registerLoader('class_exists');
 
-    // Database connection information
-    $connectionOptions = array(
-      'driver' => 'pdo_mysql',
-      'user' =>     $db['default']['username'],
-      'password' => $db['default']['password'],
-      'host' =>     $db['default']['hostname'],
-      'dbname' =>   $db['default']['database']
-    );
+        // Database connection information
+        $connectionOptions = array(
+            'driver' => 'pdo_mysql',
+            'user' => $db['default']['username'],
+            'password' => $db['default']['password'],
+            'host' => $db['default']['hostname'],
+            'dbname' => $db['default']['database'],
+        );
 
-    // Create EntityManager
-    $this->em = EntityManager::create($connectionOptions, $config);
-  }
+        // Create EntityManager
+        $this->em = EntityManager::create($connectionOptions, $config);
+    }
 }
 
-foreach (scandir(APPPATH . "models/Entities") as $file) {
-  if (substr($file, -4) !== ".php") continue;
-  require_once APPPATH . "models/Entities/$file";
+foreach (scandir(APPPATH."models/Entities") as $file) {
+    if (substr($file, -4) !== ".php") {
+        continue;
+    }
+    require_once APPPATH."models/Entities/$file";
 }
